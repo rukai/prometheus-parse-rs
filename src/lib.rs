@@ -1,15 +1,17 @@
 use chrono::{DateTime, TimeZone, Utc};
 use itertools::Itertools;
-use once_cell::sync::Lazy;
 use regex::Regex;
 
 use std::collections::{BTreeMap, HashMap};
 use std::io;
 use std::ops::Deref;
+use std::sync::LazyLock;
 
-static HELP_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^#\s+HELP\s+(\w+)\s+(.+)$").unwrap());
-static TYPE_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^#\s+TYPE\s+(\w+)\s+(\w+)").unwrap());
-static SAMPLE_RE: Lazy<Regex> = Lazy::new(|| {
+static HELP_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^#\s+HELP\s+(\w+)\s+(.+)$").unwrap());
+static TYPE_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^#\s+TYPE\s+(\w+)\s+(\w+)").unwrap());
+static SAMPLE_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"^(?P<name>\w+)(\{(?P<labels>[^}]+)\})?\s+(?P<value>\S+)(\s+(?P<timestamp>\S+))?")
         .unwrap()
 });
